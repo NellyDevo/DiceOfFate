@@ -3,18 +3,18 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>UnimportantInfo</groupId>
 
-    <artifactId>LaunchPad</artifactId>
+    <artifactId>DiceOfFate</artifactId>
     <version>0.0.1</version>
-    <name>LaunchPad</name>
-    <description>A testing zone, intended to prepare your mod for liftoff.</description>
+    <name>diceoffate</name>
+    <description>Adds a rerolls system to slay the spire.</description>
     <!-- Change the above for mod information. -->
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <SlayTheSpire.version>12-22-2020</SlayTheSpire.version>
+        <SlayTheSpire.version>12-18-2022</SlayTheSpire.version>
         <ModTheSpire.version>3.18.2</ModTheSpire.version>
-        <ModID>launchpad</ModID>
+        <ModID>diceoffate</ModID>
 
         <!--CHANGE THIS TO YOUR STEAM INSTALLATION-->
         <Steam.path>C:/Program Files (x86)/Steam/steamapps/</Steam.path>

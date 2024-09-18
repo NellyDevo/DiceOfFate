@@ -1,4 +1,4 @@
-package LaunchPad.util;
+package diceoffate.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
