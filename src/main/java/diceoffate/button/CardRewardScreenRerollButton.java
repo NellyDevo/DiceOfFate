@@ -20,7 +20,7 @@ import diceoffate.helpers.DiceManager;
 import diceoffate.helpers.DiceTexture;
 import javassist.CtBehavior;
 
-public class RerollCardRewardButton extends RerollButton {
+public class CardRewardScreenRerollButton extends RerollButton {
     private static final TextureRegion BUTTON = new TextureRegion(ImageMaster.REWARD_SCREEN_TAKE_BUTTON);
     private boolean isHidden = true;
     private static final int W = 512, H = 256;
@@ -33,7 +33,7 @@ public class RerollCardRewardButton extends RerollButton {
     private float controllerImgTextWidth = 0f;
     private static final float HITBOX_W = 260f * Settings.scale, HITBOX_H = 80f * Settings.scale;
 
-    public RerollCardRewardButton() {
+    public CardRewardScreenRerollButton() {
         y = TAKE_Y;
         dieX = 100 * Settings.scale;
         hb.width = HITBOX_W;
@@ -187,7 +187,7 @@ public class RerollCardRewardButton extends RerollButton {
                 method = SpirePatch.CLASS
         )
         public static class RerollButtonField {
-            public static SpireField<RerollCardRewardButton> rerollButton = new SpireField<>(RerollCardRewardButton::new);
+            public static SpireField<CardRewardScreenRerollButton> rerollButton = new SpireField<>(CardRewardScreenRerollButton::new);
         }
         @SpirePatch(
                 clz = CardRewardScreen.class,
@@ -198,7 +198,7 @@ public class RerollCardRewardButton extends RerollButton {
                     locator = UpdateLocator.class
             )
             public static void updateButton(CardRewardScreen __instance) {
-                RerollCardRewardButton button = CardRewardRerollButtonPatches.RerollButtonField.rerollButton.get(__instance);
+                CardRewardScreenRerollButton button = CardRewardRerollButtonPatches.RerollButtonField.rerollButton.get(__instance);
                 if (button != null) {
                     button.update(__instance);
                 }
@@ -220,7 +220,7 @@ public class RerollCardRewardButton extends RerollButton {
                     locator = HideLocator.class
             )
             public static void hideButton(CardRewardScreen __instance) {
-                RerollCardRewardButton button = CardRewardRerollButtonPatches.RerollButtonField.rerollButton.get(__instance);
+                CardRewardScreenRerollButton button = CardRewardRerollButtonPatches.RerollButtonField.rerollButton.get(__instance);
                 if (button != null) {
                     button.hide();
                 }
@@ -242,7 +242,7 @@ public class RerollCardRewardButton extends RerollButton {
                     locator = RenderLocator.class
             )
             public static void renderButton(CardRewardScreen __instance, SpriteBatch sb) {
-                RerollCardRewardButton button = CardRewardRerollButtonPatches.RerollButtonField.rerollButton.get(__instance);
+                CardRewardScreenRerollButton button = CardRewardRerollButtonPatches.RerollButtonField.rerollButton.get(__instance);
                 if (button != null) {
                     button.render(sb);
                 }
@@ -268,7 +268,7 @@ public class RerollCardRewardButton extends RerollButton {
                     locator = ShowLocator.class
             )
             public static void showButton(CardRewardScreen __instance) {
-                RerollCardRewardButton button = CardRewardRerollButtonPatches.RerollButtonField.rerollButton.get(__instance);
+                CardRewardScreenRerollButton button = CardRewardRerollButtonPatches.RerollButtonField.rerollButton.get(__instance);
                 if (button != null) {
                     button.show();
                 }
