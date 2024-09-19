@@ -1,0 +1,14 @@
+{
+  "diceoffate:tooltip": {
+    "TEXT": [
+      "Dice Of Fate",
+      "Spend Dice to alter fate, changing various rewards."
+    ]
+  },
+  "diceoffate:button": {
+    "TEXT": [
+      "Reroll"
+    ]
+  }
+}
+

@@ -7,12 +7,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.evacipated.cardcrawl.modthespire.lib.*;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.helpers.MathHelper;
 import com.megacrit.cardcrawl.helpers.controller.CInputActionSet;
+import com.megacrit.cardcrawl.localization.UIStrings;
 import com.megacrit.cardcrawl.rewards.chests.BossChest;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.rooms.MonsterRoomBoss;
@@ -33,6 +35,7 @@ public class BossRelicRerollButton extends RerollButton {
     private final Color btnColor = Color.WHITE.cpy();
     private float controllerImgTextWidth = 0f;
     private static final float HITBOX_W = 260f * Settings.scale, HITBOX_H = 80f * Settings.scale;
+    private static final UIStrings uiStrings = CardCrawlGame.languagePack.getUIString("diceoffate:button");
 
     @Override
     protected TextureRegion getButton() {
@@ -76,10 +79,10 @@ public class BossRelicRerollButton extends RerollButton {
     @Override
     public void render(SpriteBatch sb) {
         renderButton(sb);
-        if (FontHelper.getSmartWidth(FontHelper.buttonLabelFont, "Reroll", 9999f, 0f) > 200f * Settings.scale) {
-            FontHelper.renderFontCentered(sb, FontHelper.buttonLabelFont, "Reroll", x, y, textColor, 0.8f);
+        if (FontHelper.getSmartWidth(FontHelper.buttonLabelFont, uiStrings.TEXT[0], 9999f, 0f) > 200f * Settings.scale) {
+            FontHelper.renderFontCentered(sb, FontHelper.buttonLabelFont, uiStrings.TEXT[0], x, y, textColor, 0.8f);
         } else {
-            FontHelper.renderFontCentered(sb, FontHelper.buttonLabelFont, "Reroll", x, y, textColor);
+            FontHelper.renderFontCentered(sb, FontHelper.buttonLabelFont, uiStrings.TEXT[0], x, y, textColor);
         }
         if (rollTimer > 0.0f) {
             rollTimer = DiceTexture.renderRollingDice(sb, rollTimer, rollStart, x + dieX, y + dieY, scale);
@@ -89,7 +92,7 @@ public class BossRelicRerollButton extends RerollButton {
         Color color = DiceManager.canAfford(cost) ? Color.WHITE : Color.RED;
         FontHelper.renderFontRightTopAligned(sb, FontHelper.topPanelAmountFont, String.valueOf(cost), hb.x + dieX + 144f * Settings.scale, hb.y + dieY + 39f * Settings.scale, color);
         hb.render(sb);
-    } //TODO: localize
+    }
 
     private void renderButton(SpriteBatch sb) {
         sb.setColor(btnColor);
@@ -137,7 +140,7 @@ public class BossRelicRerollButton extends RerollButton {
         if (Settings.isControllerMode) {
 
             if (controllerImgTextWidth == 0f) {
-                controllerImgTextWidth = FontHelper.getSmartWidth(FontHelper.buttonLabelFont, "Reroll", 99999f, 0f) / 2f;
+                controllerImgTextWidth = FontHelper.getSmartWidth(FontHelper.buttonLabelFont, uiStrings.TEXT[0], 99999f, 0f) / 2f;
             }
 
             sb.setColor(Color.WHITE);

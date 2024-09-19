@@ -70,7 +70,6 @@ public abstract class RerollButton {
         Color color = DiceManager.canAfford(cost) ? Color.WHITE : Color.RED;
         FontHelper.renderFontRightTopAligned(sb, FontHelper.topPanelAmountFont, String.valueOf(cost), dieX + hb.cX + 15f * scale * Settings.scale, dieY + hb.cY - 7f * scale * Settings.scale, color);
         hb.render(sb);
-        //TODO: add hover highlight
     }
 
     public void resetHitbox() {

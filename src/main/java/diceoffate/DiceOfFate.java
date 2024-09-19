@@ -3,7 +3,9 @@ package diceoffate;
 import basemod.BaseMod;
 import basemod.interfaces.*;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
+import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.localization.UIStrings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 import com.megacrit.cardcrawl.rewards.RewardSave;
@@ -20,7 +22,7 @@ import diceoffate.toppanel.DiceTopPanelItem;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 @SpireInitializer
-public class DiceOfFate implements PostInitializeSubscriber, PostBattleSubscriber, PostDungeonInitializeSubscriber {
+public class DiceOfFate implements PostInitializeSubscriber, PostBattleSubscriber, PostDungeonInitializeSubscriber, EditStringsSubscriber {
     public static final String modID = "diceoffate";
 
     public static String makeID(String idText) {
@@ -73,6 +75,16 @@ public class DiceOfFate implements PostInitializeSubscriber, PostBattleSubscribe
     public void receivePostDungeonInitialize() {
         if (AbstractDungeon.actNum == 0) {
             DiceManager.startGame();
+        }
+    }
+
+    @Override
+    public void receiveEditStrings() {
+        BaseMod.loadCustomStringsFile(UIStrings.class, makePath("localization/") + "eng/ui_strings.json");
+        if (!Settings.language.toString().equalsIgnoreCase("eng")) {
+            try {
+                BaseMod.loadCustomStringsFile(UIStrings.class, makePath("localization/") + Settings.language.toString().toLowerCase() + "/ui_strings.json");
+            } catch (Exception ignored) {}
         }
     }
 }

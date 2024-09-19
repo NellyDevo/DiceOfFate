@@ -5,10 +5,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.MathHelper;
 import com.megacrit.cardcrawl.helpers.TipHelper;
+import com.megacrit.cardcrawl.localization.UIStrings;
 import diceoffate.DiceOfFate;
 import diceoffate.helpers.DiceManager;
 import diceoffate.helpers.DiceTexture;
@@ -24,6 +26,7 @@ public class DiceTopPanelItem extends TopPanelItem {
     private static final float ANIMATION_TIME = 0.25f;
     private float animationTime = 0.0f;
     private int lastValue = 0;
+    private static final UIStrings uiStrings = CardCrawlGame.languagePack.getUIString("diceoffate:tooltip");
 
     public DiceTopPanelItem() {
         super(null, DiceOfFate.modID);
@@ -42,7 +45,7 @@ public class DiceTopPanelItem extends TopPanelItem {
                 currentImage = DiceTexture.getDiceImage();
             } while (tmp == currentImage);
         }
-        TipHelper.renderGenericTip(TOP_RIGHT_TIP_X, TIP_Y, "Dice Of Fate", "Spend Dice to alter fate, changing various rewards."); //TODO localize
+        TipHelper.renderGenericTip(TOP_RIGHT_TIP_X, TIP_Y, uiStrings.TEXT[0], uiStrings.TEXT[1]);
     }
 
     @Override
