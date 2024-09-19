@@ -47,7 +47,7 @@ public class DiceTopPanelItem extends TopPanelItem {
 
     @Override
     public void render(SpriteBatch sb) {
-        DiceTexture.renderDice(sb, currentImage, getHitbox().x + getHitbox().cX, getHitbox().y + getHitbox().cY, currentScale);
+        DiceTexture.renderDice(sb, currentImage, getHitbox().x + getHitbox().cX, getHitbox().y + getHitbox().cY, currentScale, 0.0f);
         FontHelper.renderFontRightTopAligned(sb, FontHelper.topPanelAmountFont, String.valueOf(DiceOfFate.diceManager.getDiceAmount()), getHitbox().x + 58f * Settings.scale, getHitbox().y + 25f * Settings.scale, Color.WHITE);
         renderHitbox(sb);
     }

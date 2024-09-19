@@ -3,6 +3,10 @@ package diceoffate.helpers;
 import basemod.abstracts.CustomSavable;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.random.Random;
+import com.megacrit.cardcrawl.rewards.RewardItem;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class DiceManager implements CustomSavable<DiceManager.DiceInfo> {

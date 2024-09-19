@@ -32,36 +32,40 @@ public class DiceTexture {
 
     public static TextureRegion getDiceImage(int index) {
         while (index < 0) index += IMAGE_COUNT;
-        while (index > IMAGE_COUNT) index -= IMAGE_COUNT;
+        while (index >= IMAGE_COUNT) index -= IMAGE_COUNT;
         return DICE_IMAGES[index];
     }
 
-    public static float renderCyclingDice(SpriteBatch sb, int dieOffset, float timer, float interval, float centerX, float centerY) {
+    public static float renderCyclingDice(SpriteBatch sb, int dieOffset, float timer, float interval, float centerX, float centerY, float scale) {
         timer += Gdx.graphics.getDeltaTime();
-        while (timer > interval) {
-            timer -= interval;
-            ++dieOffset;
+        if (timer > IMAGE_COUNT * interval) {
+            timer -= IMAGE_COUNT * interval;
         }
-        renderDice(sb, getDiceImage(dieOffset), centerX, centerY, 1f);
+        for (float f = 0; f < timer; f += interval) {
+            dieOffset++;
+        }
+        renderDice(sb, getDiceImage(dieOffset), centerX, centerY, scale, 0.0f);
         return timer;
     }
 
-    public static float renderRollingDice(SpriteBatch sb, float timer, float startTimer, float centerX, float centerY) {
-        float scale = 2f - Math.abs(timer - (startTimer / 2f)) / (startTimer / 2f);
-        renderDice(sb, getDiceImage(), centerX, centerY, scale);
+    public static float renderRollingDice(SpriteBatch sb, float timer, float startTimer, float centerX, float centerY, float scale) {
+        float timerScale = 1f - Math.abs(timer - (startTimer / 2f)) / (startTimer / 2f);
+        float rotationScale = (startTimer - timer) / startTimer;
+        int index = (int)(IMAGE_COUNT * 2 * rotationScale);
+        renderDice(sb, getDiceImage(index), centerX, centerY, scale * (1f + timerScale), 360f * rotationScale);
         timer -= Gdx.graphics.getDeltaTime();
         return timer;
     }
 
-    public static void renderDice(SpriteBatch sb, TextureRegion image, float centerX, float centerY, float scale) {
+    public static void renderDice(SpriteBatch sb, TextureRegion image, float centerX, float centerY, float scale, float rotation) {
         float halfWidth = image.getRegionWidth() / 2f;
         float halfHeight = image.getRegionHeight() / 2f;
         sb.setColor(Color.WHITE);
         sb.draw(image,
-                centerX - halfWidth, centerY - halfHeight,              //bottom left coordinates
-                halfWidth, halfHeight,                                  //origin coordinates relative to bottom left
-                image.getRegionWidth(), image.getRegionHeight(),        //base width and height
-                Settings.scale * scale, Settings.scale * scale, 0);     //width scale, height scale, rotation
+                centerX - halfWidth, centerY - halfHeight,                  //bottom left coordinates
+                halfWidth, halfHeight,                                      //origin coordinates relative to bottom left
+                image.getRegionWidth(), image.getRegionHeight(),            //base width and height
+                Settings.scale * scale, Settings.scale * scale, rotation);  //width scale, height scale, rotation
     }
 
 }
