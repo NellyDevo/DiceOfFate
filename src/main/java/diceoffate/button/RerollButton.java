@@ -60,7 +60,7 @@ public abstract class RerollButton {
             idleTimer = DiceTexture.renderCyclingDice(sb, dieOffset, idleTimer, idleInterval / (hb.hovered ? 2f : 1f), x + dieX, y + dieY, scale);
         }
         Color color = DiceManager.canAfford(cost) ? Color.WHITE : Color.RED;
-        FontHelper.renderFontRightTopAligned(sb, FontHelper.topPanelAmountFont, String.valueOf(cost), hb.x + dieX + 39f * Settings.scale, hb.y + dieY + 25f * Settings.scale, color);
+        FontHelper.renderFontRightTopAligned(sb, FontHelper.topPanelAmountFont, String.valueOf(cost), dieX + hb.cX + 15f * scale * Settings.scale, dieY + hb.cY - 7f * scale * Settings.scale, color);
         hb.render(sb);
         //TODO: add hover highlight
     }
