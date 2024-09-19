@@ -18,8 +18,11 @@ import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.rooms.MonsterRoomBoss;
 import com.megacrit.cardcrawl.rooms.TreasureRoomBoss;
 import com.megacrit.cardcrawl.screens.select.BossRelicSelectScreen;
+import diceoffate.helpers.DiceHooks;
 import diceoffate.helpers.DiceManager;
 import diceoffate.helpers.DiceTexture;
+import diceoffate.helpers.listeners.BossRelicListener;
+import diceoffate.helpers.listeners.CardListener;
 
 public class BossRelicRerollButton extends RerollButton {
     public static final int BOSS_REROLL_COST = 3;
@@ -57,6 +60,9 @@ public class BossRelicRerollButton extends RerollButton {
                 screen.open(next.relics);
                 next.isOpen = true;
                 rollTimer = rollStart = 0.5f;
+                DiceHooks.getListeners(BossRelicListener.class).forEach(listener -> {
+                    listener.bossRelicRerolled(bossRoom, next);
+                });
                 //todo: roll sound
             } else {
                 //todo: fail sound

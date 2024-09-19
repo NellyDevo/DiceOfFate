@@ -12,7 +12,11 @@ import com.megacrit.cardcrawl.helpers.Hitbox;
 import com.megacrit.cardcrawl.helpers.PotionHelper;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 import diceoffate.DiceOfFate;
+import diceoffate.helpers.DiceHooks;
 import diceoffate.helpers.DiceManager;
+import diceoffate.helpers.listeners.CardListener;
+import diceoffate.helpers.listeners.PotionListener;
+import diceoffate.helpers.listeners.RelicListener;
 import diceoffate.util.TexLoader;
 
 import java.util.HashMap;
@@ -77,13 +81,17 @@ public class RewardRerollButton extends RerollButton {
 
     public static void rerollCards(RewardItem reward) {
         reward.cards = AbstractDungeon.getRewardCards();
-        //TODO: expose reroll hook
+        DiceHooks.getListeners(CardListener.class).forEach(listener -> {
+            listener.cardRerolled(reward);
+        });
     }
 
     public static void rerollPotion(RewardItem reward) {
         reward.potion = PotionHelper.getRandomPotion();
         reward.text = reward.potion.name;
-        //TODO: expose reroll hook
+        DiceHooks.getListeners(PotionListener.class).forEach(listener -> {
+            listener.potionRerolled(reward);
+        });
     }
 
     public static void rerollRelic(RewardItem reward) {
@@ -91,7 +99,9 @@ public class RewardRerollButton extends RerollButton {
         reward.relic.hb = new Hitbox(80f * Settings.scale, 80f * Settings.scale);
         reward.relic.hb.move(-1000f, -1000f);
         reward.text = reward.relic.name;
-        //TODO: expose reroll hook
+        DiceHooks.getListeners(RelicListener.class).forEach(listener -> {
+            listener.relicRerolled(reward);
+        });
     }
 
     public static class RewardRerollButtonPatches {

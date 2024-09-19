@@ -16,7 +16,10 @@ import com.megacrit.cardcrawl.rooms.ShopRoom;
 import com.megacrit.cardcrawl.shop.Merchant;
 import com.megacrit.cardcrawl.shop.ShopScreen;
 import diceoffate.DiceOfFate;
+import diceoffate.helpers.DiceHooks;
 import diceoffate.helpers.DiceManager;
+import diceoffate.helpers.listeners.CardListener;
+import diceoffate.helpers.listeners.ShopListener;
 import diceoffate.util.TexLoader;
 
 import java.util.ArrayList;
@@ -88,7 +91,9 @@ public class ShopRerollButton extends RerollButton {
         ReflectionHacks.setPrivate(shopRoom.merchant, Merchant.class, "cards1", replacementColored);
         ReflectionHacks.setPrivate(shopRoom.merchant, Merchant.class, "cards2", replacementColorless);
         shopScreen.init(replacementColored, replacementColorless);
-        //TODO: expose reroll hook
+        DiceHooks.getListeners(ShopListener.class).forEach(listener -> {
+            listener.shopRerolled(shopScreen, shopRoom);
+        });
     }
 
     private boolean groupContains(ArrayList<AbstractCard> group, AbstractCard candidate) {

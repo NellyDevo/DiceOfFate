@@ -5,9 +5,16 @@ import basemod.interfaces.*;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.rewards.RewardItem;
 import com.megacrit.cardcrawl.rewards.RewardSave;
+import com.megacrit.cardcrawl.rewards.chests.BossChest;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
+import com.megacrit.cardcrawl.rooms.ShopRoom;
+import com.megacrit.cardcrawl.rooms.TreasureRoomBoss;
+import com.megacrit.cardcrawl.shop.ShopScreen;
+import diceoffate.helpers.DiceHooks;
 import diceoffate.helpers.DiceManager;
+import diceoffate.helpers.listeners.*;
 import diceoffate.reward.DiceReward;
 import diceoffate.toppanel.DiceTopPanelItem;
 
@@ -51,21 +58,21 @@ public class DiceOfFate implements PostInitializeSubscriber, PostBattleSubscribe
         boolean isEliteOrBoss = AbstractDungeon.getCurrRoom().eliteTrigger;
         for (AbstractMonster m : AbstractDungeon.getMonsters().monsters) {
             if (m.type == AbstractMonster.EnemyType.BOSS) {
-                room.rewards.add(new DiceReward(DiceManager.instance.getBossRewardAmount()));
+                room.rewards.add(new DiceReward(DiceManager.getBossRewardAmount()));
                 return;
             }
         }
         if (room.eliteTrigger) {
-            room.rewards.add(new DiceReward(DiceManager.instance.getEliteRewardAmount()));
-        } else if (DiceManager.instance.rollNormalReward()) {
-            room.rewards.add(new DiceReward(DiceManager.instance.getNormalRewardAmount()));
+            room.rewards.add(new DiceReward(DiceManager.getEliteRewardAmount()));
+        } else if (DiceManager.rollNormalReward()) {
+            room.rewards.add(new DiceReward(DiceManager.getNormalRewardAmount()));
         }
     }
 
     @Override
     public void receivePostDungeonInitialize() {
         if (AbstractDungeon.actNum == 0) {
-            DiceManager.instance.startGame();
+            DiceManager.startGame();
         }
     }
 }
