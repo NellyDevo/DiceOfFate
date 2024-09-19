@@ -1,6 +1,7 @@
 package diceoffate.button;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.megacrit.cardcrawl.core.Settings;
@@ -54,6 +55,13 @@ public abstract class RerollButton {
         float halfWidth = button.getRegionWidth() / 2f;
         float halfHeight = button.getRegionHeight() / 2f;
         sb.draw(button, x - halfWidth, y - halfHeight, halfWidth, halfHeight, button.getRegionWidth(), button.getRegionHeight(), Settings.scale, Settings.scale, 0);
+        if (hb.hovered) {
+            sb.setBlendFunction(GL30.GL_SRC_ALPHA, GL30.GL_ONE);
+            sb.setColor(new Color(1f, 1f, 1f, 0.3f));
+            sb.draw(button, x - halfWidth, y - halfHeight, halfWidth, halfHeight, button.getRegionWidth(), button.getRegionHeight(), Settings.scale, Settings.scale, 0);
+            sb.setColor(Color.WHITE);
+            sb.setBlendFunction(GL30.GL_SRC_ALPHA, GL30.GL_ONE_MINUS_SRC_ALPHA);
+        }
         if (rollTimer > 0.0f) {
             rollTimer = DiceTexture.renderRollingDice(sb, rollTimer, rollStart, x + dieX, y + dieY, scale);
         } else {
