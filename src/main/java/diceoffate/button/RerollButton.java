@@ -4,8 +4,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.Hitbox;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
+import diceoffate.helpers.DiceManager;
 import diceoffate.helpers.DiceTexture;
 
 import java.util.Random;
@@ -21,8 +23,8 @@ public abstract class RerollButton {
     public float idleInterval = 1.0f;
     public float rollTimer = 0.0f;
     public float rollStart = 0.0f;
-    public int value;
-    private final int dieOffset = new Random().nextInt(DiceTexture.IMAGE_COUNT);
+    public int cost;
+    protected final int dieOffset = new Random().nextInt(DiceTexture.IMAGE_COUNT);
 
     protected abstract TextureRegion getButton();
 
@@ -38,17 +40,12 @@ public abstract class RerollButton {
             if (hb.hovered) {
                 if (InputHelper.justReleasedClickLeft) {
                     InputHelper.justReleasedClickLeft = false;
-                    onClick();
+                    hb.clicked = true;
                 }
             } else {
                 hb.clickStarted = false;
             }
         }
-    }
-
-    public void onClick() {
-        hb.clicked = true;
-        rollTimer = rollStart = 0.5f;
     }
 
     public void render(SpriteBatch sb) {
@@ -62,7 +59,10 @@ public abstract class RerollButton {
         } else {
             idleTimer = DiceTexture.renderCyclingDice(sb, dieOffset, idleTimer, idleInterval / (hb.hovered ? 2f : 1f), x + dieX, y + dieY, scale);
         }
+        Color color = DiceManager.canAfford(cost) ? Color.WHITE : Color.RED;
+        FontHelper.renderFontRightTopAligned(sb, FontHelper.topPanelAmountFont, String.valueOf(cost), hb.x + dieX + 39f * Settings.scale, hb.y + dieY + 25f * Settings.scale, color);
         hb.render(sb);
+        //TODO: add hover highlight
     }
 
     public void resetHitbox() {

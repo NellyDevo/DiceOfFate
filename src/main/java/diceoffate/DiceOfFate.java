@@ -14,8 +14,6 @@ import diceoffate.toppanel.DiceTopPanelItem;
 @SuppressWarnings({"unused", "WeakerAccess"})
 @SpireInitializer
 public class DiceOfFate implements PostInitializeSubscriber, PostBattleSubscriber, PostDungeonInitializeSubscriber {
-    public static final DiceManager diceManager = new DiceManager();
-
     public static final String modID = "diceoffate";
 
     public static String makeID(String idText) {
@@ -40,7 +38,7 @@ public class DiceOfFate implements PostInitializeSubscriber, PostBattleSubscribe
 
     @Override
     public void receivePostInitialize() {
-        BaseMod.addSaveField(modID, diceManager);
+        BaseMod.addSaveField(modID, DiceManager.instance);
         BaseMod.addTopPanelItem(new DiceTopPanelItem());
         BaseMod.registerCustomReward(
                 DiceReward.RewardType.DICE_OF_FATE_REWARD,
@@ -53,21 +51,21 @@ public class DiceOfFate implements PostInitializeSubscriber, PostBattleSubscribe
         boolean isEliteOrBoss = AbstractDungeon.getCurrRoom().eliteTrigger;
         for (AbstractMonster m : AbstractDungeon.getMonsters().monsters) {
             if (m.type == AbstractMonster.EnemyType.BOSS) {
-                room.rewards.add(new DiceReward(diceManager.getBossRewardAmount()));
+                room.rewards.add(new DiceReward(DiceManager.instance.getBossRewardAmount()));
                 return;
             }
         }
         if (room.eliteTrigger) {
-            room.rewards.add(new DiceReward(diceManager.getEliteRewardAmount()));
-        } else if (DiceOfFate.diceManager.rollNormalReward()) {
-            room.rewards.add(new DiceReward(diceManager.getNormalRewardAmount()));
+            room.rewards.add(new DiceReward(DiceManager.instance.getEliteRewardAmount()));
+        } else if (DiceManager.instance.rollNormalReward()) {
+            room.rewards.add(new DiceReward(DiceManager.instance.getNormalRewardAmount()));
         }
     }
 
     @Override
     public void receivePostDungeonInitialize() {
         if (AbstractDungeon.actNum == 0) {
-            diceManager.startGame();
+            DiceManager.instance.startGame();
         }
     }
 }

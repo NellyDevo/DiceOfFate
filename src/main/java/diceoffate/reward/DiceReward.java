@@ -4,7 +4,7 @@ import basemod.abstracts.CustomReward;
 import com.badlogic.gdx.graphics.Texture;
 import com.evacipated.cardcrawl.modthespire.lib.SpireEnum;
 import com.megacrit.cardcrawl.rewards.RewardItem;
-import diceoffate.DiceOfFate;
+import diceoffate.helpers.DiceManager;
 import diceoffate.helpers.DiceTexture;
 
 public class DiceReward extends CustomReward {
@@ -18,7 +18,7 @@ public class DiceReward extends CustomReward {
 
     @Override
     public boolean claimReward() {
-        DiceOfFate.diceManager.addOrRemoveDice(amount);
+        DiceManager.addOrRemoveDice(amount);
         return true;
     }
 

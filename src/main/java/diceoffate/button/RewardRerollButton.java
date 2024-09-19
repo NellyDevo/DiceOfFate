@@ -7,8 +7,12 @@ import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePostfixPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.helpers.Hitbox;
+import com.megacrit.cardcrawl.helpers.PotionHelper;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 import diceoffate.DiceOfFate;
+import diceoffate.helpers.DiceManager;
 import diceoffate.util.TexLoader;
 
 import java.util.HashMap;
@@ -45,7 +49,7 @@ public class RewardRerollButton extends RerollButton {
             initialized = true;
             Integer cost = REWARD_REROLL_COSTS.get(reward.type);
             if (cost != null) {
-                value = cost;
+                this.cost = cost;
             } else {
                 RewardRerollButton.RewardRerollButtonPatches.RerollButtonField.rerollButton.set(reward, null);
             }
@@ -53,11 +57,18 @@ public class RewardRerollButton extends RerollButton {
         y = reward.y;
         update();
         if (hb.clicked) {
-            reward.hb.clicked = false;
-            Consumer<RewardItem> consumer = REWARD_REROLL_EXECUTION.get(reward.type);
-            if (consumer != null) {
-                consumer.accept(reward);
+            if (DiceManager.canAfford(cost)) {
+                Consumer<RewardItem> consumer = REWARD_REROLL_EXECUTION.get(reward.type);
+                if (consumer != null) {
+                    consumer.accept(reward);
+                    DiceManager.addOrRemoveDice(-cost);
+                    rollTimer = rollStart = 0.5f;
+                    //todo: good click sound
+                }
+            } else {
+                //todo: bad click sound
             }
+            reward.hb.clicked = false;
         }
         if (hb.hovered) {
             reward.hb.hovered = false;
@@ -65,15 +76,22 @@ public class RewardRerollButton extends RerollButton {
     }
 
     public static void rerollCards(RewardItem reward) {
-        System.out.println("blep");
+        reward.cards = AbstractDungeon.getRewardCards();
+        //TODO: expose reroll hook
     }
 
     public static void rerollPotion(RewardItem reward) {
-        System.out.println("blap");
+        reward.potion = PotionHelper.getRandomPotion();
+        reward.text = reward.potion.name;
+        //TODO: expose reroll hook
     }
 
     public static void rerollRelic(RewardItem reward) {
-        System.out.println("blop");
+        reward.relic = AbstractDungeon.returnRandomRelic(AbstractDungeon.returnRandomRelicTier());
+        reward.relic.hb = new Hitbox(80f * Settings.scale, 80f * Settings.scale);
+        reward.relic.hb.move(-1000f, -1000f);
+        reward.text = reward.relic.name;
+        //TODO: expose reroll hook
     }
 
     public static class RewardRerollButtonPatches {
@@ -82,7 +100,7 @@ public class RewardRerollButton extends RerollButton {
                 method = SpirePatch.CLASS
         )
         public static class RerollButtonField {
-            public static SpireField<RewardRerollButton> rerollButton = new SpireField<>(() -> new RewardRerollButton());
+            public static SpireField<RewardRerollButton> rerollButton = new SpireField<>(RewardRerollButton::new);
         }
         @SpirePatch(
                 clz = RewardItem.class,

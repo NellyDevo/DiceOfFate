@@ -13,7 +13,8 @@ import java.util.Random;
 
 public class DiceTexture {
     //sprite sheet raw
-    private static final Texture DICE_TEXTURE = TexLoader.getTexture(DiceOfFate.makeImagePath("dice_sheet.png"));
+    private static final Texture DICE_TEXTURE = TexLoader.getTexture(DiceOfFate.makeImagePath("dice/dice_sheet.png"));
+    public static final TextureRegion DICE_SHADOW = new TextureRegion(TexLoader.getTexture(DiceOfFate.makeImagePath("dice/dice_shadow.png")));
     //sprite sheet related constants
     public static final int IMAGE_COUNT = 6;
     private static final int IMAGE_WIDTH = 32;
@@ -44,6 +45,7 @@ public class DiceTexture {
         for (float f = 0; f < timer; f += interval) {
             dieOffset++;
         }
+        renderDice(sb, DICE_SHADOW, centerX, centerY, scale, 0);
         renderDice(sb, getDiceImage(dieOffset), centerX, centerY, scale, 0.0f);
         return timer;
     }
@@ -52,6 +54,7 @@ public class DiceTexture {
         float timerScale = 1f - Math.abs(timer - (startTimer / 2f)) / (startTimer / 2f);
         float rotationScale = (startTimer - timer) / startTimer;
         int index = (int)(IMAGE_COUNT * 2 * rotationScale);
+        renderDice(sb, DICE_SHADOW, centerX, centerY, scale, 0);
         renderDice(sb, getDiceImage(index), centerX, centerY, scale * (1f + timerScale), 360f * rotationScale);
         timer -= Gdx.graphics.getDeltaTime();
         return timer;

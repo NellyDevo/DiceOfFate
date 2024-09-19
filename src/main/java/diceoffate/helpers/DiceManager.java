@@ -3,13 +3,10 @@ package diceoffate.helpers;
 import basemod.abstracts.CustomSavable;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.random.Random;
-import com.megacrit.cardcrawl.rewards.RewardItem;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class DiceManager implements CustomSavable<DiceManager.DiceInfo> {
+    public static final DiceManager instance = new DiceManager();
     private static final int CHANCE_ADJUSTMENT_AMOUNT = 10;
     private static final int NORMAL_DROP_RATE = 40;
     private static final int NORMAL_DICE_REWARD_AMOUNT = 1;
@@ -18,45 +15,45 @@ public class DiceManager implements CustomSavable<DiceManager.DiceInfo> {
     private static final int STARTING_DICE_AMOUNT = 3;
     private DiceInfo info = null;
 
-    public boolean rollNormalReward() {
-        if (info.rng.random(0, 99) < NORMAL_DROP_RATE + info.currentChanceAdjustment) {
-            info.currentChanceAdjustment -= CHANCE_ADJUSTMENT_AMOUNT;
+    public static boolean rollNormalReward() {
+        if (instance.info.rng.random(0, 99) < NORMAL_DROP_RATE + instance.info.currentChanceAdjustment) {
+            instance.info.currentChanceAdjustment -= CHANCE_ADJUSTMENT_AMOUNT;
             return true;
         } else {
-            info.currentChanceAdjustment += CHANCE_ADJUSTMENT_AMOUNT;
+            instance.info.currentChanceAdjustment += CHANCE_ADJUSTMENT_AMOUNT;
             return false;
         }
     }
 
-    public int getNormalRewardAmount() {
+    public static int getNormalRewardAmount() {
         return NORMAL_DICE_REWARD_AMOUNT;
     }
 
-    public int getEliteRewardAmount() {
+    public static int getEliteRewardAmount() {
         return ELITE_DICE_REWARD_AMOUNT;
     }
 
-    public int getBossRewardAmount() {
+    public static int getBossRewardAmount() {
         return BOSS_DICE_REWARD_AMOUNT;
     }
 
-    public void addOrRemoveDice(int amount) {
-        info.diceCount += amount;
-        if (info.diceCount < 0) {
-            info.diceCount = 0;
+    public static void addOrRemoveDice(int amount) {
+        instance.info.diceCount += amount;
+        if (instance.info.diceCount < 0) {
+            instance.info.diceCount = 0;
         }
     }
 
-    public boolean canAfford(int amount) {
-        return info.diceCount >= amount;
+    public static boolean canAfford(int amount) {
+        return instance.info.diceCount >= amount;
     }
 
-    public int getDiceAmount() {
-        return info == null ? 0 : info.diceCount;
+    public static int getDiceAmount() {
+        return instance.info == null ? 0 : instance.info.diceCount;
     }
 
-    public void startGame() {
-        info = new DiceInfo();
+    public static void startGame() {
+        instance.info = new DiceInfo();
     }
 
     @Override
