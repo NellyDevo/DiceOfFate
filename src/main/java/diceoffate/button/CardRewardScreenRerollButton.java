@@ -35,7 +35,7 @@ public class CardRewardScreenRerollButton extends RerollButton {
 
     public CardRewardScreenRerollButton() {
         y = TAKE_Y;
-        dieX = 100 * Settings.scale;
+        dieX = 65 * Settings.scale;
         hb.width = HITBOX_W;
         hb.height = HITBOX_H;
         cost = RewardRerollButton.REWARD_REROLL_COSTS.get(RewardItem.RewardType.CARD);
@@ -189,6 +189,7 @@ public class CardRewardScreenRerollButton extends RerollButton {
         public static class RerollButtonField {
             public static SpireField<CardRewardScreenRerollButton> rerollButton = new SpireField<>(CardRewardScreenRerollButton::new);
         }
+
         @SpirePatch(
                 clz = CardRewardScreen.class,
                 method = "update"
@@ -204,10 +205,6 @@ public class CardRewardScreenRerollButton extends RerollButton {
                 }
             }
         }
-        @SpirePatch(
-                clz = CardRewardScreen.class,
-                method = "update"
-        )
         private static class UpdateLocator extends SpireInsertLocator {
             @Override
             public int[] Locate(CtBehavior ctMethodToPatch) throws Exception {
@@ -215,6 +212,11 @@ public class CardRewardScreenRerollButton extends RerollButton {
                 return LineFinder.findInOrder(ctMethodToPatch, finalMatcher);
             }
         }
+
+        @SpirePatch(
+                clz = CardRewardScreen.class,
+                method = "update"
+        )
         public static class RerollButtonHide {
             @SpireInsertPatch(
                     locator = HideLocator.class
@@ -233,6 +235,7 @@ public class CardRewardScreenRerollButton extends RerollButton {
                 return LineFinder.findInOrder(ctMethodToPatch, finalMatcher);
             }
         }
+
         @SpirePatch(
                 clz = CardRewardScreen.class,
                 method = "render"
@@ -255,6 +258,7 @@ public class CardRewardScreenRerollButton extends RerollButton {
                 return LineFinder.findInOrder(ctMethodToPatch, finalMatcher);
             }
         }
+
         @SpirePatch2(
                 clz = CardRewardScreen.class,
                 method = "reopen"
