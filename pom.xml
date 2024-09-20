@@ -4,7 +4,7 @@
     <groupId>UnimportantInfo</groupId>
 
     <artifactId>DiceOfFate</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
     <name>Dice of Fate</name>
     <description>Adds a rerolls system to slay the spire.</description>
     <!-- Change the above for mod information. -->

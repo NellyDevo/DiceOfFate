@@ -20,10 +20,7 @@ import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.rooms.MonsterRoomBoss;
 import com.megacrit.cardcrawl.rooms.TreasureRoomBoss;
 import com.megacrit.cardcrawl.screens.select.BossRelicSelectScreen;
-import diceoffate.helpers.DiceHooks;
-import diceoffate.helpers.DiceManager;
-import diceoffate.helpers.DiceProperties;
-import diceoffate.helpers.DiceTexture;
+import diceoffate.helpers.*;
 import diceoffate.helpers.listeners.BossRelicListener;
 import diceoffate.helpers.listeners.CardListener;
 
@@ -66,9 +63,9 @@ public class BossRelicRerollButton extends RerollButton {
                 DiceHooks.getListeners(BossRelicListener.class).forEach(listener -> {
                     listener.bossRelicRerolled(bossRoom, next);
                 });
-                //todo: roll sound
+                DiceSound.playDiceSound();
             } else {
-                //todo: fail sound
+                CardCrawlGame.sound.play("UI_CLICK_2", 0.05f);
             }
         }
 

@@ -76,29 +76,31 @@ public class DiceProperties {
             InputHolder inputHolder = PROPERTIES_LIST.get(i).getThird();
             settingsPanel.addUIElement(new ModLabel(uiStrings.TEXT[i+1], xPos, yPos, settingsPanel, me -> {}));
             ModButton input = new ModButton(xPos - 100f, yPos - 54f, settingsPanel, (me) -> {
-                me.parent.waitingOnEvent = true;
-                inputHolder.start();
-                oldInputProcessor = Gdx.input.getInputProcessor();
-                Gdx.input.setInputProcessor(new NumberInput() {
-                    @Override
-                    public boolean keyUp(int keycode) {
-                        if (!super.keyUp(keycode)) {
-                            if (keycode == Input.Keys.ENTER) {
-                                me.parent.waitingOnEvent = false;
-                                Gdx.input.setInputProcessor(oldInputProcessor);
-                                try {
-                                    properties.setInt(PROPERTIES_LIST.get(index).getFirst(), Integer.parseInt(inputHolder.getValue()));
-                                    saveProperties();
-                                } catch(NumberFormatException ignored) {}
-                                inputHolder.reset();
-                            } else {
-                                if (keycode >= 144) keycode -= Input.Keys.NUMPAD_0 - Input.Keys.NUM_0;
-                                inputHolder.append(Input.Keys.toString(keycode));
+                if (!me.parent.waitingOnEvent) {
+                    me.parent.waitingOnEvent = true;
+                    inputHolder.start();
+                    oldInputProcessor = Gdx.input.getInputProcessor();
+                    Gdx.input.setInputProcessor(new NumberInput() {
+                        @Override
+                        public boolean keyUp(int keycode) {
+                            if (!super.keyUp(keycode)) {
+                                if (keycode == Input.Keys.ENTER) {
+                                    me.parent.waitingOnEvent = false;
+                                    Gdx.input.setInputProcessor(oldInputProcessor);
+                                    try {
+                                        properties.setInt(PROPERTIES_LIST.get(index).getFirst(), Integer.parseInt(inputHolder.getValue()));
+                                        saveProperties();
+                                    } catch(NumberFormatException ignored) {}
+                                    inputHolder.reset();
+                                } else {
+                                    if (keycode >= 144) keycode -= Input.Keys.NUMPAD_0 - Input.Keys.NUM_0;
+                                    inputHolder.append(Input.Keys.toString(keycode));
+                                }
                             }
+                            return true;
                         }
-                        return true;
-                    }
-                });
+                    });
+                }
             });
             settingsPanel.addUIElement(input);
             settingsPanel.addUIElement(new ModLabel("", xPos - 56f, yPos, settingsPanel, me -> {
@@ -120,8 +122,10 @@ public class DiceProperties {
         settingsPanel.addUIElement(new ModLabel(uiStrings.TEXT[0], 1309f, 475f, settingsPanel, me -> {}));
         ModButton restore = new ModButton(1209f, 421f, settingsPanel, (me) -> {
             for (Triple<String, Integer, InputHolder> property : PROPERTIES_LIST) {
-                properties.setInt(property.getFirst(), property.getSecond());
-                saveProperties();
+                if (!me.parent.waitingOnEvent) {
+                    properties.setInt(property.getFirst(), property.getSecond());
+                    saveProperties();
+                }
             }
         });
         settingsPanel.addUIElement(restore);

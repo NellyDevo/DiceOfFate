@@ -8,6 +8,7 @@ import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePostfixPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.rooms.ShopRoom;
@@ -17,6 +18,7 @@ import diceoffate.DiceOfFate;
 import diceoffate.helpers.DiceHooks;
 import diceoffate.helpers.DiceManager;
 import diceoffate.helpers.DiceProperties;
+import diceoffate.helpers.DiceSound;
 import diceoffate.helpers.listeners.ShopListener;
 import diceoffate.util.TexLoader;
 
@@ -47,9 +49,9 @@ public class ShopRerollButton extends RerollButton {
                 rerollShop(shop);
                 DiceManager.addOrRemoveDice(-cost);
                 rollTimer = rollStart = 0.5f;
-                //todo: good click sound
+                DiceSound.playDiceSound();
             } else {
-                //todo: bad click sound
+                CardCrawlGame.sound.play("UI_CLICK_2", 0.05f);
             }
         }
         Float rugY = ReflectionHacks.getPrivate(shop, ShopScreen.class, "rugY");

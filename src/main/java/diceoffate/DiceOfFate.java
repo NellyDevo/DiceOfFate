@@ -17,6 +17,7 @@ import com.megacrit.cardcrawl.rewards.RewardSave;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import diceoffate.helpers.DiceManager;
 import diceoffate.helpers.DiceProperties;
+import diceoffate.helpers.DiceSound;
 import diceoffate.reward.DiceReward;
 import diceoffate.toppanel.DiceTopPanelItem;
 import diceoffate.util.TexLoader;
@@ -26,7 +27,7 @@ import java.util.Properties;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 @SpireInitializer
-public class DiceOfFate implements PostInitializeSubscriber, PostBattleSubscriber, PostDungeonInitializeSubscriber, EditStringsSubscriber {
+public class DiceOfFate implements PostInitializeSubscriber, PostBattleSubscriber, PostDungeonInitializeSubscriber, EditStringsSubscriber, AddAudioSubscriber {
     public static final String modID = "diceoffate";
     public static UIStrings uiStrings;
 
@@ -99,5 +100,10 @@ public class DiceOfFate implements PostInitializeSubscriber, PostBattleSubscribe
                 BaseMod.loadCustomStringsFile(UIStrings.class, makePath("localization/") + Settings.language.toString().toLowerCase() + "/ui_strings.json");
             } catch (Exception ignored) {}
         }
+    }
+
+    @Override
+    public void receiveAddAudio() {
+        DiceSound.initialize();
     }
 }

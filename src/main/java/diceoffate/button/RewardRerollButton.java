@@ -6,6 +6,7 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireField;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePostfixPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.Hitbox;
@@ -15,6 +16,7 @@ import diceoffate.DiceOfFate;
 import diceoffate.helpers.DiceHooks;
 import diceoffate.helpers.DiceManager;
 import diceoffate.helpers.DiceProperties;
+import diceoffate.helpers.DiceSound;
 import diceoffate.helpers.listeners.CardListener;
 import diceoffate.helpers.listeners.PotionListener;
 import diceoffate.helpers.listeners.RelicListener;
@@ -23,16 +25,17 @@ import diceoffate.util.TexLoader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class RewardRerollButton extends RerollButton {
-    public static final Map<RewardItem.RewardType, Integer> REWARD_REROLL_COSTS = new HashMap<>();
+    public static final Map<RewardItem.RewardType, Supplier<Integer>> REWARD_REROLL_COSTS = new HashMap<>();
     public static final Map<RewardItem.RewardType, Consumer<RewardItem>> REWARD_REROLL_EXECUTION = new HashMap<>();
     static {
-        REWARD_REROLL_COSTS.put(RewardItem.RewardType.CARD, DiceProperties.getProperty(DiceProperties.CARD_REROLL_COST));
+        REWARD_REROLL_COSTS.put(RewardItem.RewardType.CARD, () -> DiceProperties.getProperty(DiceProperties.CARD_REROLL_COST));
         REWARD_REROLL_EXECUTION.put(RewardItem.RewardType.CARD, RewardRerollButton::rerollCards);
-        REWARD_REROLL_COSTS.put(RewardItem.RewardType.POTION, DiceProperties.getProperty(DiceProperties.POTION_REROLL_COST));
+        REWARD_REROLL_COSTS.put(RewardItem.RewardType.POTION, () -> DiceProperties.getProperty(DiceProperties.POTION_REROLL_COST));
         REWARD_REROLL_EXECUTION.put(RewardItem.RewardType.POTION, RewardRerollButton::rerollPotion);
-        REWARD_REROLL_COSTS.put(RewardItem.RewardType.RELIC, DiceProperties.getProperty(DiceProperties.RELIC_REROLL_COST));
+        REWARD_REROLL_COSTS.put(RewardItem.RewardType.RELIC, () -> DiceProperties.getProperty(DiceProperties.RELIC_REROLL_COST));
         REWARD_REROLL_EXECUTION.put(RewardItem.RewardType.RELIC, RewardRerollButton::rerollRelic);
     }
     public static final TextureRegion BUTTON_TEXTURE = new TextureRegion(TexLoader.getTexture(DiceOfFate.makeImagePath("ui/reroll_button.png")));
@@ -52,9 +55,9 @@ public class RewardRerollButton extends RerollButton {
     public void update(RewardItem reward) {
         if (!initialized) {
             initialized = true;
-            Integer cost = REWARD_REROLL_COSTS.get(reward.type);
+            Supplier<Integer> cost = REWARD_REROLL_COSTS.get(reward.type);
             if (cost != null) {
-                this.cost = cost;
+                this.cost = cost.get();
             } else {
                 RewardRerollButton.RewardRerollButtonPatches.RerollButtonField.rerollButton.set(reward, null);
             }
@@ -68,10 +71,10 @@ public class RewardRerollButton extends RerollButton {
                     consumer.accept(reward);
                     DiceManager.addOrRemoveDice(-cost);
                     rollTimer = rollStart = 0.5f;
-                    //todo: good click sound
+                    DiceSound.playDiceSound();
                 }
             } else {
-                //todo: bad click sound
+                CardCrawlGame.sound.play("UI_CLICK_2", 0.05f);
             }
             reward.hb.clicked = false;
         }

@@ -19,6 +19,7 @@ import com.megacrit.cardcrawl.rewards.RewardItem;
 import com.megacrit.cardcrawl.screens.CardRewardScreen;
 import com.megacrit.cardcrawl.ui.buttons.SkipCardButton;
 import diceoffate.helpers.DiceManager;
+import diceoffate.helpers.DiceSound;
 import diceoffate.helpers.DiceTexture;
 import javassist.CtBehavior;
 
@@ -41,7 +42,7 @@ public class CardRewardScreenRerollButton extends RerollButton {
         dieX = 65 * Settings.scale;
         hb.width = HITBOX_W;
         hb.height = HITBOX_H;
-        cost = RewardRerollButton.REWARD_REROLL_COSTS.get(RewardItem.RewardType.CARD);
+        cost = RewardRerollButton.REWARD_REROLL_COSTS.get(RewardItem.RewardType.CARD).get();
     }
 
     @Override
@@ -73,9 +74,9 @@ public class CardRewardScreenRerollButton extends RerollButton {
                 screen.rewardGroup.clear();
                 screen.rewardGroup.addAll(screen.rItem.cards);
                 rollTimer = rollStart = 0.5f;
-                //todo: roll sound
+                DiceSound.playDiceSound();
             } else {
-                //todo: fail sound
+                CardCrawlGame.sound.play("UI_CLICK_2", 0.05f);
             }
         }
         if (x != target_x) {
