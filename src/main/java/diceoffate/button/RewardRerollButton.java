@@ -14,6 +14,7 @@ import com.megacrit.cardcrawl.rewards.RewardItem;
 import diceoffate.DiceOfFate;
 import diceoffate.helpers.DiceHooks;
 import diceoffate.helpers.DiceManager;
+import diceoffate.helpers.DiceProperties;
 import diceoffate.helpers.listeners.CardListener;
 import diceoffate.helpers.listeners.PotionListener;
 import diceoffate.helpers.listeners.RelicListener;
@@ -27,11 +28,11 @@ public class RewardRerollButton extends RerollButton {
     public static final Map<RewardItem.RewardType, Integer> REWARD_REROLL_COSTS = new HashMap<>();
     public static final Map<RewardItem.RewardType, Consumer<RewardItem>> REWARD_REROLL_EXECUTION = new HashMap<>();
     static {
-        REWARD_REROLL_COSTS.put(RewardItem.RewardType.CARD, 1);
+        REWARD_REROLL_COSTS.put(RewardItem.RewardType.CARD, DiceProperties.getProperty(DiceProperties.CARD_REROLL_COST));
         REWARD_REROLL_EXECUTION.put(RewardItem.RewardType.CARD, RewardRerollButton::rerollCards);
-        REWARD_REROLL_COSTS.put(RewardItem.RewardType.POTION, 1);
+        REWARD_REROLL_COSTS.put(RewardItem.RewardType.POTION, DiceProperties.getProperty(DiceProperties.POTION_REROLL_COST));
         REWARD_REROLL_EXECUTION.put(RewardItem.RewardType.POTION, RewardRerollButton::rerollPotion);
-        REWARD_REROLL_COSTS.put(RewardItem.RewardType.RELIC, 2);
+        REWARD_REROLL_COSTS.put(RewardItem.RewardType.RELIC, DiceProperties.getProperty(DiceProperties.RELIC_REROLL_COST));
         REWARD_REROLL_EXECUTION.put(RewardItem.RewardType.RELIC, RewardRerollButton::rerollRelic);
     }
     public static final TextureRegion BUTTON_TEXTURE = new TextureRegion(TexLoader.getTexture(DiceOfFate.makeImagePath("ui/reroll_button.png")));

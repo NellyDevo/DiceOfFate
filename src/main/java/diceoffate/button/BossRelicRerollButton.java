@@ -22,12 +22,12 @@ import com.megacrit.cardcrawl.rooms.TreasureRoomBoss;
 import com.megacrit.cardcrawl.screens.select.BossRelicSelectScreen;
 import diceoffate.helpers.DiceHooks;
 import diceoffate.helpers.DiceManager;
+import diceoffate.helpers.DiceProperties;
 import diceoffate.helpers.DiceTexture;
 import diceoffate.helpers.listeners.BossRelicListener;
 import diceoffate.helpers.listeners.CardListener;
 
 public class BossRelicRerollButton extends RerollButton {
-    public static final int BOSS_REROLL_COST = 3;
     public static final TextureRegion BUTTON = new TextureRegion(ImageMaster.REWARD_SCREEN_TAKE_BUTTON);
     private static final int W = 512, H = 256;
     public static final float TAKE_Y = Settings.HEIGHT / 2f - 170f * Settings.scale;
@@ -48,7 +48,7 @@ public class BossRelicRerollButton extends RerollButton {
         dieX = 65 * Settings.scale;
         hb.width = HITBOX_W;
         hb.height = HITBOX_H;
-        cost = BOSS_REROLL_COST;
+        cost = DiceProperties.getProperty(DiceProperties.BOSS_RELIC_REROLL_COST);
     }
 
     public void update(BossRelicSelectScreen screen) {

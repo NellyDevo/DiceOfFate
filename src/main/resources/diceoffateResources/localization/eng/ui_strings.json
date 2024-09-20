@@ -1,4 +1,29 @@
 {
+  "diceoffate": {
+    "TEXT": [
+      "Dice of Fate",
+      "Accumulate Dice and spend them to reroll your rewards!"
+    ]
+  },
+  "diceoffate:options": {
+    "TEXT": [
+      "Restore Defaults",
+      "Boss Relic Reroll Cost",
+      "Card Reroll Cost",
+      "Potion Reroll Cost",
+      "Relic Reroll Cost",
+      "Shop Reroll Cost",
+
+      "Normal Reward Chance",
+      "Normal Reward Chance Adjustment",
+      "Normal Reward Chance Minimum",
+
+      "Starting Dice",
+      "Boss Reward Amount",
+      "Elite Reward Amount",
+      "Normal Reward Amount"
+    ]
+  },
   "diceoffate:tooltip": {
     "TEXT": [
       "Dice Of Fate",

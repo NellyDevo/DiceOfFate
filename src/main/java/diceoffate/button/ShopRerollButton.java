@@ -1,10 +1,8 @@
 package diceoffate.button;
 
 import basemod.ReflectionHacks;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.evacipated.cardcrawl.modthespire.lib.SpireField;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePostfixPatch;
@@ -18,7 +16,7 @@ import com.megacrit.cardcrawl.shop.ShopScreen;
 import diceoffate.DiceOfFate;
 import diceoffate.helpers.DiceHooks;
 import diceoffate.helpers.DiceManager;
-import diceoffate.helpers.listeners.CardListener;
+import diceoffate.helpers.DiceProperties;
 import diceoffate.helpers.listeners.ShopListener;
 import diceoffate.util.TexLoader;
 
@@ -26,11 +24,7 @@ import java.util.ArrayList;
 
 public class ShopRerollButton extends RerollButton {
     public static final TextureRegion BUTTON_TEXTURE = new TextureRegion(TexLoader.getTexture(DiceOfFate.makeImagePath("ui/shop_reroll_button.png")));
-    private static final float SCROLL_SPEED = 6f;
-    private static final float SNAP_THRESHOLD = 0.5f;
-    private static final int SHOP_REROLL_COST = 3;
     private static final float Y_BASE = (Settings.HEIGHT / 2f) - 150f * Settings.scale;
-    private float targetY;
 
     @Override
     protected TextureRegion getButton() {
@@ -40,11 +34,10 @@ public class ShopRerollButton extends RerollButton {
     public ShopRerollButton() {
         x = (Settings.WIDTH) - 90f * Settings.scale;
         y = Y_BASE;
-        targetY = y;
         scale = 1.5f;
         hb.width = 128;
         hb.height = 128;
-        cost = SHOP_REROLL_COST;
+        cost = DiceProperties.getProperty(DiceProperties.SHOP_REROLL_COST);
     }
 
     public void update(ShopScreen shop) {
