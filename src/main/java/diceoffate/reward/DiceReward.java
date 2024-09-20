@@ -14,7 +14,7 @@ public class DiceReward extends CustomReward {
     public int amount;
 
     public DiceReward(int amount) {
-        super((Texture)null, amount + (amount == 1 ? uiStrings.TEXT[0] : uiStrings.TEXT[1]), RewardType.DICE_OF_FATE_REWARD);
+        super((Texture)null, String.format(amount == 1 ? uiStrings.TEXT[0] : uiStrings.TEXT[1], amount), RewardType.DICE_OF_FATE_REWARD);
         this.amount = amount;
         iconRegion = DiceTexture.getDiceImage();
     }

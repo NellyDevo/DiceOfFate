@@ -37,8 +37,8 @@
   },
   "diceoffate:reward": {
     "TEXT": [
-      "Die Of Fate",
-      "Dice Of Fate"
+      "%s Die Of Fate",
+      "%s Dice Of Fate"
     ]
   }
 }
