@@ -34,6 +34,12 @@
     "TEXT": [
       "Reroll"
     ]
+  },
+  "diceoffate:reward": {
+    "TEXT": [
+      "Die Of Fate",
+      "Dice Of Fate"
+    ]
   }
 }
 
