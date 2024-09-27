@@ -7,10 +7,11 @@ import com.megacrit.cardcrawl.random.Random;
 
 public class DiceManager implements CustomSavable<DiceManager.DiceInfo> {
     public static final DiceManager instance = new DiceManager();
-    private DiceInfo info = null;
+    private static Random rng;
+    private DiceInfo info = new DiceInfo();
 
     public static boolean rollNormalReward() {
-        if (instance.info.rng.random(0, 99) < DiceProperties.getProperty(DiceProperties.NORMAL_REWARD_CHANCE) + instance.info.currentChanceAdjustment) {
+        if (getRng().random(0, 99) < DiceProperties.getProperty(DiceProperties.NORMAL_REWARD_CHANCE) + instance.info.currentChanceAdjustment) {
             instance.info.currentChanceAdjustment -= DiceProperties.getProperty(DiceProperties.NORMAL_REWARD_ADJUSTMENT);
             if (instance.info.currentChanceAdjustment + DiceProperties.getProperty(DiceProperties.NORMAL_REWARD_CHANCE) < DiceProperties.getProperty(DiceProperties.REWARD_CHANCE_MINIMUM)) {
                 instance.info.currentChanceAdjustment = -(DiceProperties.getProperty(DiceProperties.NORMAL_REWARD_CHANCE) - DiceProperties.getProperty(DiceProperties.REWARD_CHANCE_MINIMUM));
@@ -20,6 +21,13 @@ public class DiceManager implements CustomSavable<DiceManager.DiceInfo> {
             instance.info.currentChanceAdjustment += DiceProperties.getProperty(DiceProperties.NORMAL_REWARD_ADJUSTMENT);
             return false;
         }
+    }
+
+    private static Random getRng() {
+        if (rng == null) {
+            rng = new Random(Settings.seed, instance.info == null ? 0 : instance.info.rngCounter);
+        }
+        return rng;
     }
 
     public static void addOrRemoveDice(int amount) {
@@ -39,10 +47,13 @@ public class DiceManager implements CustomSavable<DiceManager.DiceInfo> {
 
     public static void startGame() {
         instance.info = new DiceInfo();
+        rng = new Random(Settings.seed);
     }
 
     @Override
     public DiceInfo onSave() {
+        if (info == null) {info = new DiceInfo();}
+        info.rngCounter = rng == null ? 0 : rng.counter;
         return info;
     }
 
@@ -52,7 +63,7 @@ public class DiceManager implements CustomSavable<DiceManager.DiceInfo> {
     }
 
     public static class DiceInfo {
-        private final Random rng = new Random(Settings.seed);
+        private int rngCounter = 0;
         private int diceCount = DiceProperties.getProperty(DiceProperties.STARTING_DICE);
         private int currentChanceAdjustment = 0;
     }
